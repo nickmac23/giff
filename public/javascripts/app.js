@@ -11,15 +11,16 @@ window.addEventListener("DOMContentLoaded", function() {
 	// Put video listeners into place
 
 
+  document.getElementById("snap").addEventListener("click", function() {
 		navigator.webkitGetUserMedia(videoObj, function(stream){
 			video.src = window.URL.createObjectURL(stream);
-			video.play();
+			// video.play();
 		}, errBack);
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
 
 
 
-  document.getElementById("snap").addEventListener("click", function() {
-	context.drawImage(video, 0, 0, canvas.width, canvas.height);
-});
+  });
+
 }, false);
