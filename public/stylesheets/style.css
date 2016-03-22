@@ -1,4 +1,14 @@
-/*video{
-  width: 1px;
-  height: 1px;
-}*/
+body{
+  padding-left: 20px;
+}
+video, canvas, img{
+  border: 1px solid black;
+}
+main{
+  display: flex;
+  flex-direction: row;
+}
+div{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
