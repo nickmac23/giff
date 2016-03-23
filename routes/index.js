@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
+// var video = require('../public/javascripts/app.js');
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var arr = fs.readFile('txt').join('')
-  res.json(arr);
-  // res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express' });
 });
+
 
 
 module.exports = router;
