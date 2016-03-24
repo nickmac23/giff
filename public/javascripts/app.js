@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded", function() {
 		context.font = "50px serif";
 		context.fillStyle = "red";
 		context.fillText(val, 40, 50);
-		videoSrc.push(canvas.toDataURL('image/pgn'));
+		videoSrc.push(canvas.toDataURL('image/webp'));
 	}
 
 		navigator.webkitGetUserMedia(videoObj, function(stream){
@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
 
 	document.getElementById("snap").addEventListener("click", function() {
-		vidToCanvas();	
+		vidToCanvas();
   });
 
 	button.addEventListener('click', function(){
@@ -64,7 +64,6 @@ window.addEventListener("DOMContentLoaded", function() {
 	document.getElementById('take').addEventListener('click', function(){
 		var tiempo = 1000/+document.getElementById('picSec').value;
 		var timeloops = Math.floor((+document.getElementById('time').value * 1000) / tiempo);
-		console.log(timeloops);
 		(function next(c, maxLoops) {
 				if (c >= maxLoops) return;
 				setTimeout(function() {
@@ -74,6 +73,31 @@ window.addEventListener("DOMContentLoaded", function() {
 				}, tiempo);
 			})(0, timeloops);
 	})
+document.getElementById('sub').addEventListener('click', function(){
+
+
+
+	var data = {pic: videoSrc.join('\n')}
+
+
+
+
+		$.ajax({
+	           url: '/gif',
+	           type: 'POST',
+	           cache: false,
+	           data: data,
+	           success: function(data){
+	              console.log('Success!')
+	           }
+	           , error: function(jqXHR, textStatus, err){
+	               console.log(('text status '+textStatus+', err '+err))
+	           }
+	        })
+
+
+
+})
 
 
 }, false);
