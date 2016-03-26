@@ -1,5 +1,5 @@
 
-window.addEventListener("DOMContentLoaded", function() {
+
 	// Grab elements, create settings, etc.
 
 	var canvas = document.getElementById("canvas"),
@@ -17,6 +17,17 @@ window.addEventListener("DOMContentLoaded", function() {
 			console.log("Video capture error: ", error.code);
 		};
 
+		// gifshot.createGIF({
+		//     'images': ['http://i.imgur.com/2OO33vX.jpg', 'http://i.imgur.com/qOwVaSN.png', 'http://i.imgur.com/Vo5mFZJ.gif']
+		// 	},function(obj) {
+		// 	    if(!obj.error) {
+		// 	        var image = obj.image,
+		// 	        animatedImage = document.createElement('img');
+		// 	        animatedImage.src = image;
+		// 	        document.body.appendChild(animatedImage);
+		// 	    }
+		// });
+
 	// Put video listeners into place
 	function vidToCanvas () {
 		val = text.value;
@@ -25,6 +36,7 @@ window.addEventListener("DOMContentLoaded", function() {
 		context.fillStyle = "red";
 		context.fillText(val, 40, 50);
 		videoSrc.push(canvas.toDataURL('image/webp'));
+		console.log(videoSrc[0]);
 	}
 
 		navigator.webkitGetUserMedia(videoObj, function(stream){
@@ -73,15 +85,9 @@ window.addEventListener("DOMContentLoaded", function() {
 				}, tiempo);
 			})(0, timeloops);
 	})
+
 document.getElementById('sub').addEventListener('click', function(){
-
-
-
 	var data = {pic: videoSrc.join('\n')}
-
-
-
-
 		$.ajax({
 	           url: '/gif',
 	           type: 'POST',
@@ -94,10 +100,4 @@ document.getElementById('sub').addEventListener('click', function(){
 	               console.log(('text status '+textStatus+', err '+err))
 	           }
 	        })
-
-
-
-})
-
-
-}, false);
+ });
