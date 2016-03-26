@@ -12,3 +12,16 @@ div{
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+
+#gifDisplay{
+  width: 400px;
+  height: 700px;
+  border: 1px solid black;
+}
+
+img{
+  height: 120px;
+  width: 160px;
+    border: 1px solid black;
+}

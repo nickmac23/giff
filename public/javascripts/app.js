@@ -36,7 +36,6 @@
 		context.fillStyle = "red";
 		context.fillText(val, 40, 50);
 		videoSrc.push(canvas.toDataURL('image/webp'));
-		console.log(videoSrc[0]);
 	}
 
 		navigator.webkitGetUserMedia(videoObj, function(stream){
@@ -87,17 +86,29 @@
 	})
 
 document.getElementById('sub').addEventListener('click', function(){
-	var data = {pic: videoSrc.join('\n')}
-		$.ajax({
-	           url: '/gif',
-	           type: 'POST',
-	           cache: false,
-	           data: data,
-	           success: function(data){
-	              console.log('Success!')
-	           }
-	           , error: function(jqXHR, textStatus, err){
-	               console.log(('text status '+textStatus+', err '+err))
-	           }
-	        })
+	$('#gifDisplay').empty();
+	for (var i = 0; i < videoSrc.length; i++) {
+		$('#gifDisplay').append("<img class='order' src=" + videoSrc[i] + ">")
+										.append("<input type='text' class='input' value=" + (+videoSrc.length - i) + ">")
+
+	}
+
  });
+
+ $(document).on('click', '#but', function() {
+	 var arr = []
+	 for (var i = 0; i < document.getElementsByClassName('order').length; i++) {
+		document.getElementsByClassName('order')[i].value =  +document.getElementsByClassName('input')[i].value;
+		arr.push(document.getElementsByClassName('order')[i]);
+	 }
+	 arr.sort(function(a, b) {
+		  return a.value - b.value;
+		});
+		$('#gifDisplay').empty();
+		for (var i = 0; i < arr.length; i++) {
+			videoSrc[i] = arr[i].src
+			$('#gifDisplay').append("<img class='order' src=" + videoSrc[i] + ">")
+											.append("<input type='text' class='input' value=" + (arr.length - i) + ">")
+
+		}
+ })
