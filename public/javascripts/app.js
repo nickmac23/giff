@@ -17,31 +17,39 @@
 			console.log("Video capture error: ", error.code);
 		};
 
-		// gifshot.createGIF({
-		//     'images': ['http://i.imgur.com/2OO33vX.jpg', 'http://i.imgur.com/qOwVaSN.png', 'http://i.imgur.com/Vo5mFZJ.gif']
-		// 	},function(obj) {
-		// 	    if(!obj.error) {
-		// 	        var image = obj.image,
-		// 	        animatedImage = document.createElement('img');
-		// 	        animatedImage.src = image;
-		// 	        document.body.appendChild(animatedImage);
-		// 	    }
-		// });
 
 	// Put video listeners into place
-	function vidToCanvas () {
-		val = text.value;
-		context.drawImage(video, 0, 0, canvas.width, canvas.height);
+	function vidToCanvas (dis, id, tex) {
+		val = tex ? tex : text.value;
+		var pic = dis ? dis : video;
+		context.drawImage(pic, 0, 0, canvas.width, canvas.height);
 		context.font = "50px serif";
 		context.fillStyle = "red";
 		context.fillText(val, 40, 50);
-		videoSrc.push(canvas.toDataURL('image/webp'));
+		if ( id === undefined ) {
+			videoSrc.push(canvas.toDataURL('image/webp'));
+		}else{
+			videoSrc[+id] = canvas.toDataURL('image/webp');
+		}
 	}
 
+	if(navigator.getUserMedia) { // Standard
+		navigator.getUserMedia(videoObj, function(stream) {
+			video.src = stream;
+			video.play();
+		}, errBack);
+	} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
 		navigator.webkitGetUserMedia(videoObj, function(stream){
 			video.src = window.URL.createObjectURL(stream);
 			video.play();
 		}, errBack);
+	}
+	else if(navigator.mozGetUserMedia) { // Firefox-prefixed
+		navigator.mozGetUserMedia(videoObj, function(stream){
+			video.src = window.URL.createObjectURL(stream);
+			video.play();
+		}, errBack)
+	}
 
 
 	document.getElementById("snap").addEventListener("click", function() {
@@ -88,7 +96,8 @@
 document.getElementById('sub').addEventListener('click', function(){
 	$('#gifDisplay').empty();
 	for (var i = 0; i < videoSrc.length; i++) {
-		$('#gifDisplay').append("<img class='order' src=" + videoSrc[i] + ">")
+		$('#gifDisplay').append("<img class='order' value=" + (+videoSrc.length - i) + " src=" + videoSrc[i] + ">")
+										.append("<input type='text' id='txt" + (+videoSrc.length - i) + "'>")
 										.append("<input type='text' class='input' value=" + (+videoSrc.length - i) + ">")
 
 	}
@@ -107,8 +116,14 @@ document.getElementById('sub').addEventListener('click', function(){
 		$('#gifDisplay').empty();
 		for (var i = 0; i < arr.length; i++) {
 			videoSrc[i] = arr[i].src
-			$('#gifDisplay').append("<img class='order' src=" + videoSrc[i] + ">")
+			$('#gifDisplay').append("<img class='order' value=" + (arr.length - i) + " src=" + videoSrc[i] + ">")
+											.append("<input type='text' id='txt" + (arr.length - i) + "'>")
 											.append("<input type='text' class='input' value=" + (arr.length - i) + ">")
 
 		}
+ })
+ //adds text edit
+ $(document).on('click', '.order', function() {
+	 var txt = document.getElementById( 'txt' + ($(this).eq(0).attr('value') ) ).value ;
+	 vidToCanvas( $(this)[0], (videoSrc.length - $(this).eq(0).attr('value')) , txt )
  })
