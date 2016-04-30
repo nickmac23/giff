@@ -17,7 +17,7 @@
 			console.log("Video capture error: ", error.code);
 		};
 
-
+console.log('dope');
 	// Put video listeners into place
 	function vidToCanvas (dis, id, tex) {
 		val = tex ? tex : text.value;
